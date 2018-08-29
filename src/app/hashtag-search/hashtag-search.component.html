@@ -1,3 +1,49 @@
 <p>
-  hashtag-search works!
+  Hashtag search
 </p>
+<div class="form-search">
+    <form class="form-inline" 
+          (ngSubmit)="(f.valid)?onSubmit(f):errormsg='enter a valid hashtag'" 
+          #f="ngForm">
+      <input class="form-control" 
+        id="hashtag"
+        name="hashtag"
+        ngModel 
+        placeholder="Search by Hashtag"
+        required
+        #hashtag
+        >
+      <span class="glyphicon glyphicon-search" 
+      (click)="(f.valid)?onSubmit(f):errormsg='enter a valid hashtag'"></span>
+    </form>
+    <span class="errormsg" 
+    *ngIf="!f.valid " >{{errormsg}}</span>
+  </div>
+<!-- class="form-inline" [formGroup]="hashtagForm" -->
+<div *ngIf="f.valid && hashtagArr4print.length>0" class="tweetsTable">
+{{this.hashtagArr4print}}
+
+<table >
+    <thead>
+        <tr>
+            <th >Tweet</th>
+            <th >Likes</th>
+            <th >Retweets</th>
+            <th >Hashtags</th>
+            <th >Date</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td >{{tweets}}</td>
+        <td >{{likes}}</td>
+        <td >{{retweets}}</td>
+        <td >{{this.hashtagArr4print}}</td>
+        <td >{{tweets}}</td>
+      </tr>
+    </tbody>
+</table>
+
+
+</div>
+

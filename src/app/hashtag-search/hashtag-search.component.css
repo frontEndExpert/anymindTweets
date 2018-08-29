@@ -1,0 +1,33 @@
+.form-control{
+    width: 200px!important;
+}
+
+.form-search {
+    vertical-align: middle;
+    padding-top: 0px;
+    padding-left: 0px;
+    white-space: nowrap;
+    font-size: 18px;
+}
+form input.form-control {
+      background-color: white;
+      width: 300px!important;
+      height: 50px;
+      justify-content: flex-start;
+      border: 0 !important;
+      padding: 0px 0px 0px 22px !important;
+      margin: 15px 15px 15px 15px !important;
+      flex-basis: content;
+      border: 0px;
+      align-self: left;
+    }
+
+form span.glyphicon-search {
+    font-size: 19px!important;
+    height: 20px !important;
+    text-align: right!important;
+    right: 50px!important;
+    top: 4px !important;
+    color: #dddddd!important;
+    cursor: pointer;
+  }

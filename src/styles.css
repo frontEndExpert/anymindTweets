@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+li.nav-item.active, .tab-pane.active{
+    background-color: lightgrey!important;
+}
+tabset > ul > li.nav-item.active{
+    background-color: lightgrey!important;
+}
+
+#hashtagsearch-link.nav-link span{
+  color: black!important;
+}
+
+#hashtagsearch-link.nav-link.active > span{
+    color: cyan!important;
+}
+
+#usersearch-link.nav-link span{
+    color: black!important;
+  }
+  
+#usersearch-link.nav-link.active > span{
+      color: cyan!important;
+  }
