@@ -23,7 +23,7 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   totalItems = 9;
   maxSize = 5;
 
-  maxPage= 2;
+  maxPage = 2;
 
 
   constructor(private hashSearch: TweetServiceService) { }
