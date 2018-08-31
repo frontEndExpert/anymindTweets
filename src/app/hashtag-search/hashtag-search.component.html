@@ -20,9 +20,7 @@
     *ngIf="!f.valid " >{{errormsg}}</span>
   </div>
 <!-- class="form-inline" [formGroup]="hashtagForm" -->
-<div *ngIf="f.valid && tweetsWithHashtag.length>0" class="tweetsTable">
-{{this.hashtagArr4print}}
-
+<div *ngIf="f.valid && f.touched && tweetsWithHashtag.length>0;" class="tweetsTable">
 <table class="table table-default tweets-table">
     <thead>
         <tr>
@@ -40,7 +38,7 @@
         <td >{{tweet.likes}}</td>
         <td >{{tweet.replies}}</td>
         <td >{{tweet.retweets}}</td>
-        <td >{{this.returnTwo(tweet.hashtags)}}</td>
+        <td >{{hashTag4Table}}</td>
         <td >{{tweet.date.split(' - ')[1] | date:'MMM d, y'}}</td>
       </tr>
 
@@ -55,5 +53,5 @@
  
 
 </div>
-
+<div *ngIf="f.valid && f.touched && tweetsWithHashtag.length==0 ">No Tweets Found! Try to change the hashtags.</div>
 <!-- *ngIf="totalItems>maxPage" -->

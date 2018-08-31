@@ -17,43 +17,54 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   tweetsArr;
   allTweets = [];
   tweetsWithHashtag = [];
-  hashtagArr4print='';
-
+  hashtagArr=[''];
+  hashTag4Table='';
   currentPage = 1;
   totalItems = 9;
   maxSize = 5;
 
-  maxPage = 2;
+  maxPage = 10;
 
 
   constructor(private hashSearch: TweetServiceService) { }
 
   onSubmit(form: NgForm){
     this.errormsg='';
-  
-    this.totalItems = this.allTweets.length;
-    console.log('this.allTweets[0]',this.allTweets[0]);
+
+    this.hashtagArr = this.hashtagForm.value.hashtag.split(',');
+    console.log('hashtagArr',this.hashtagArr);
+    this.hashTag4Table = this.returnTwo(this.hashtagArr);
+    console.log('this.hashTag4Table',this.hashTag4Table);
+    let hashtagStr = this.hashtagArr[0];
+    this.tweetsWithHashtag = [...this.allTweets];
     
-    console.log('this.allTweets[0].hashtags',this.allTweets[0].hashtags);
+    this.hashtagArr.forEach(hashtag => {
+      this.tweetsWithHashtag = this.searchByHashtag(hashtag, this.tweetsWithHashtag)
+    });
 
-   // console.log('comp this.allTweets',JSON.stringify(this.allTweets));
-   this.tweetsWithHashtag = [...this.allTweets];
+    // this.tweetsWithHashtag = this.allTweets.filter(
+    //   tweet => JSON.stringify(tweet.hashtags).includes(this.hashtagArr[0] && this.hashtagArr[1]));
 
-   //console.log('form.value.hashtag',form.value.hashtag);
-   let hashtagArr = this.hashtagForm.value.hashtag.split(' ');
-   console.log('hashtagArr',hashtagArr);
+    //console.log(' this.tweetsWithHashtag', this.tweetsWithHashtag);this.searchByHashtag(hashtagStr);
+    this.totalItems = this.tweetsWithHashtag.length;
+    console.log('this.tweetsWithHashtag.length',this.tweetsWithHashtag.length);
+
 
   }
 
 
-  // searchByHashtag(hashtag: string, TweetsArr: any ){
-
-  // }
+   searchByHashtag =  (hashtag: string, hashArr ) => {
+        let tweetsByHashtag = [];
+        tweetsByHashtag = hashArr.filter(
+        tweet => tweet.text.includes(hashtag));
+        console.log(hashtag + " - " + tweetsByHashtag);
+        return tweetsByHashtag;
+    }
   
   returnTwo = (myArray: string[]) => {
     let hashString ='';
     if(myArray.length>=2){
-      hashString = myArray[0] + " " + myArray[1]
+      hashString = myArray[0] + ", " + myArray[1]
     }else{
       hashString = myArray[0]
     }
