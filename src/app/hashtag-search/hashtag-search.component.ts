@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import { NgForm } from '@angular/forms';
-import {TweetServiceService} from '../tweet-service.service'
+import {TweetObj,TweetServiceService} from '../tweet-service.service'
 
 import { Observable, Observer, Subscription, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   customObsSubscription: Subscription;
   @ViewChild('f') hashtagForm: NgForm;
   errormsg='';
-  tweetsArr=[];
+  tweetsArr;
   allTweets = [];
   tweetsWithHashtag = [];
   hashtagArr4print='';
@@ -30,17 +30,25 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
 
   onSubmit(form: NgForm){
     this.errormsg='';
-    let hashtagArr = this.hashtagForm.value.hashtag.split(' ')
-    //console.log("submitted hashtagArr",  hashtagArr);
-
+  
     this.totalItems = this.allTweets.length;
-    console.log('this.allTweets.length',this.allTweets.length);
-   // console.log('comp this.allTweets',JSON.stringify(this.allTweets));
+    console.log('this.allTweets[0]',this.allTweets[0]);
+    
+    console.log('this.allTweets[0].hashtags',this.allTweets[0].hashtags);
 
+   // console.log('comp this.allTweets',JSON.stringify(this.allTweets));
    this.tweetsWithHashtag = [...this.allTweets];
+
+   //console.log('form.value.hashtag',form.value.hashtag);
+   let hashtagArr = this.hashtagForm.value.hashtag.split(' ');
+   console.log('hashtagArr',hashtagArr);
 
   }
 
+
+  // searchByHashtag(hashtag: string, TweetsArr: any ){
+
+  // }
   
   returnTwo = (myArray: string[]) => {
     let hashString ='';
@@ -56,13 +64,13 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.customObsSubscription = this.hashSearch.getAllTweets()
     .subscribe(
-      (data: string) => {
+      (data) => {
         this.allTweets.push(JSON.parse(data));
         this.totalItems = this.allTweets.length;
-        //console.log('this.allTweets.length',this.allTweets.length);
+       // console.log('this.allTweets.length',this.allTweets.length);
       },
       (error: string) => { console.log(error); },
-      () => { console.log('completed in sub this.allTweets',this.allTweets); }
+      () => { console.log('completed in sub this.allTweets.length',this.allTweets.length); }
     );
   }
 

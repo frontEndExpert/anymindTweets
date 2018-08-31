@@ -4,12 +4,21 @@ import { HttpClient, HttpResponse  } from '@angular/common/http';
 import { Observable, Observer, Subscription, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+export interface TweetObj {
+  "account": {"fullname": string,
+            "href": string,
+            "id": number },
+  "date": string,
+  "hashtags": string[],
+  "likes": number, 
+  "replies": number, 
+  "retweets": number, 
+  "text": string
+}
+
 @Injectable({
   providedIn: 'root'
 })
-
-
-
 export class TweetServiceService {
   allTweets2;
   allTweets = [
@@ -81,7 +90,7 @@ export class TweetServiceService {
   constructor(private http: HttpClient) { }
 
 
-  getAllTweets(): Observable<String> {
+  getAllTweets(): Observable<string> {
 
     const myObservableTweets = Observable.create((observer: Observer<string>) => {
      
