@@ -22,3 +22,15 @@ tabset > ul > li.nav-item.active{
 #usersearch-link.nav-link.active > span{
       color: cyan!important;
   }
+
+/* search result pagination */
+  #pagination > pagination-controls > pagination-template {
+    width: 300px!important;
+  }
+  #pagination > pagination-controls > pagination-template   > ul {
+      width: 300px!important;
+      max-width: 300px!important;
+      height: 30px!important;
+      margin: 0px auto !important;
+      padding: 0px!important;
+  }

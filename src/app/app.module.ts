@@ -6,7 +6,10 @@ import { HashtagSearchComponent } from './hashtag-search/hashtag-search.componen
 import { UserSearchComponent } from './user-search/user-search.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TabsModule } from 'ngx-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+
+import { NgxPaginationModule, } from 'ngx-pagination';
+import { TabsModule ,PaginationModule} from 'ngx-bootstrap';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +20,11 @@ import { TabsModule } from 'ngx-bootstrap';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    PaginationModule.forRoot(),
+    NgxPaginationModule,
+    HttpClientModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

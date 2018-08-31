@@ -20,30 +20,40 @@
     *ngIf="!f.valid " >{{errormsg}}</span>
   </div>
 <!-- class="form-inline" [formGroup]="hashtagForm" -->
-<div *ngIf="f.valid && hashtagArr4print.length>0" class="tweetsTable">
+<div *ngIf="f.valid && tweetsWithHashtag.length>0" class="tweetsTable">
 {{this.hashtagArr4print}}
 
-<table >
+<table class="table table-default tweets-table">
     <thead>
         <tr>
-            <th >Tweet</th>
-            <th >Likes</th>
-            <th >Retweets</th>
-            <th >Hashtags</th>
-            <th >Date</th>
+            <th width="40%" >Tweet</th>
+            <th width="7%">Likes</th>
+            <th width="7%">Replies</th>
+            <th width="6%">Retweets</th>
+            <th width="20%" >Hashtags</th>
+            <th width="20%">Date</th>
         </tr>
     </thead>
     <tbody>
-      <tr>
-        <td >{{tweets}}</td>
-        <td >{{likes}}</td>
-        <td >{{retweets}}</td>
-        <td >{{this.hashtagArr4print}}</td>
-        <td >{{tweets}}</td>
+      <tr *ngFor="let tweet of tweetsWithHashtag | paginate: { id:'hashtagSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
+        <td >{{tweet.text}}</td>
+        <td >{{tweet.likes}}</td>
+        <td >{{tweet.replies}}</td>
+        <td >{{tweet.retweets}}</td>
+        <td >{{this.returnTwo(tweet.hashtags)}}</td>
+        <td >{{tweet.date.split(' - ')[1] | date:'MMM d, y'}}</td>
       </tr>
+
     </tbody>
 </table>
 
+    <div id="pagination" class="col-xs-12 col-12 text-center" >
+      <pagination-controls id="hashtagSearch" (pageChange)="currentPage = $event" [maxSize]="5" directionLinks="true" autoHide="true"
+            [previousLabel]="'<'" [nextLabel]="'>'" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+    </div>
+ 
 
 </div>
 
+<!-- *ngIf="totalItems>maxPage" -->

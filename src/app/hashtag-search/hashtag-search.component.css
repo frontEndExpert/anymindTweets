@@ -31,3 +31,13 @@ form span.glyphicon-search {
     color: #dddddd!important;
     cursor: pointer;
   }
+
+  .tweets-table, th,td{
+      background-color: white;
+      color: grey!important;
+      font-size: 12px;
+  }
+
+  .tweets-table{
+      width: 100%;
+}
