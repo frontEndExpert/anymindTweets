@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {TweetObj,TweetServiceService} from '../tweet-service.service'
 
 import { Observable, Observer, Subscription, interval } from 'rxjs';
@@ -11,52 +11,75 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./hashtag-search.component.css']
 })
 export class HashtagSearchComponent implements OnInit, OnDestroy {
-  customObsSubscription: Subscription;
-  @ViewChild('f') hashtagForm: NgForm;
+  tweetsObservableSubscription: Subscription; // subscribe to All Tweets
+  // hashtagForm: NgForm;
+  // @ViewChild('f') 
+  hashtagForm: FormGroup;
+  forbiddencharacters= ['/', '(', ')','[',']',',',';',':'];
   errormsg='';
-  tweetsArr;
-  allTweets = [];
-  tweetsWithHashtag = [];
-  hashtagArr=[''];
-  hashTag4Table='';
-  currentPage = 1;
-  totalItems = 9;
-  maxSize = 5;
+  
+  allTweets = []; // all the tweet form the service. Allow-Cross-Origin did not work
+  tweetsWithHashtag = []; // the filtered Tweets by hashtags
+  hashtagArr=['']; // the input hashtag to search
+  hashTag4Table=''; // the hashtag to display in the table
+  currentPage = 1; // for pager and pagination
+  totalItems = 9; // for pager and pagination
+  maxSize = 5; // for pager
 
   maxPage = 10;
 
 
   constructor(private hashSearch: TweetServiceService) { }
 
-  onSubmit(form: NgForm){
-    this.errormsg='';
+  // validateHashtag (hashTag: string){
+  //   if(!hashTag.startsWith('#')){
+  //     return {
+  //               valid: false,
+  //               msgError: "Hashtag should start with # character!"
+  //             }
+  //   }else if(hashTag.match(/[^()/><\][\\\x22,;|]+/)){
+  //     return {
+  //       valid: false,
+  //       msgError: "Please avoide special characters ^()][\\,;!"
+  //     }
+  //   }
+  // }
+
+  HashTagStarts(control: FormControl): {[s: string]: boolean} {
+    if(!control.value.startsWith('#')){
+        return {'StartsWithHash': true};
+    }
+  }
+  forbiddenChars(control: FormControl): {[s: string]: boolean} {
+    if (this.forbiddencharacters.indexOf(control.value) !== -1) {
+      return {'ForbiddenCharUse': true};
+    }
+    return null;
+  }
+
+  onSubmit(){
+    // this.errormsg='';
+    
 
     this.hashtagArr = this.hashtagForm.value.hashtag.split(',');
     console.log('hashtagArr',this.hashtagArr);
     this.hashTag4Table = this.returnTwo(this.hashtagArr);
-    console.log('this.hashTag4Table',this.hashTag4Table);
     let hashtagStr = this.hashtagArr[0];
-    this.tweetsWithHashtag = [...this.allTweets];
-    
+    this.tweetsWithHashtag = [...this.allTweets]; // starting with all tweets
+    // filtering the tweets array by hashtags recursivly
     this.hashtagArr.forEach(hashtag => {
       this.tweetsWithHashtag = this.searchByHashtag(hashtag, this.tweetsWithHashtag)
     });
 
-    // this.tweetsWithHashtag = this.allTweets.filter(
-    //   tweet => JSON.stringify(tweet.hashtags).includes(this.hashtagArr[0] && this.hashtagArr[1]));
-
-    //console.log(' this.tweetsWithHashtag', this.tweetsWithHashtag);this.searchByHashtag(hashtagStr);
     this.totalItems = this.tweetsWithHashtag.length;
     console.log('this.tweetsWithHashtag.length',this.tweetsWithHashtag.length);
-
-
   }
 
 
    searchByHashtag =  (hashtag: string, hashArr ) => {
         let tweetsByHashtag = [];
-        tweetsByHashtag = hashArr.filter(
-        tweet => tweet.text.includes(hashtag));
+        tweetsByHashtag = [...hashArr.filter( tweet => tweet.text.includes(hashtag))];
+
         console.log(hashtag + " - " + tweetsByHashtag);
         return tweetsByHashtag;
     }
@@ -73,7 +96,12 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.customObsSubscription = this.hashSearch.getAllTweets()
+    this.hashtagForm = new FormGroup({
+      'hashtag': new FormControl(null, [Validators.required, this.forbiddencharacters.bind(this)])
+      });
+
+
+    this.tweetsObservableSubscription = this.hashSearch.getAllTweets()
     .subscribe(
       (data) => {
         this.allTweets.push(JSON.parse(data));
@@ -86,7 +114,7 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.customObsSubscription.unsubscribe();
+    this.tweetsObservableSubscription.unsubscribe();
   }
 
 }
