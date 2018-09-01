@@ -30,7 +30,24 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
 
 
   constructor(private hashSearch: TweetServiceService) { }
+  
+  ngOnInit() {
+    this.hashtagForm = new FormGroup({
+      hashtag: new FormControl(null, [Validators.required, this.forbiddenChars])
+    });
 
+
+    this.tweetsObservableSubscription = this.hashSearch.getAllTweets()
+    .subscribe(
+      (data) => {
+        this.allTweets.push(JSON.parse(data));
+        this.totalItems = this.allTweets.length;
+       // console.log('this.allTweets.length',this.allTweets.length);
+      },
+      (error: string) => { console.log(error); },
+      () => { console.log('completed in sub this.allTweets.length',this.allTweets.length); }
+    );
+  }
   // validateHashtag (hashTag: string){
   //   if(!hashTag.startsWith('#')){
   //     return {
@@ -50,11 +67,15 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
         return {'StartsWithHash': true};
     }
   }
+
+
   forbiddenChars(control: FormControl): {[s: string]: boolean} {
-    if (this.forbiddencharacters.indexOf(control.value) !== -1) {
-      return {'ForbiddenCharUse': true};
-    }
-    return null;
+    var forbiddenRegex= /[\/\\\(\)\[\]\}\{\&\|\^]./
+      if (control.value.match(forbiddenRegex)) {
+        //console.log('ForbiddenCharUse=True');
+        return {'ForbiddenCharUse': true};
+      }
+      return null;
   }
 
   onSubmit(){
@@ -95,23 +116,7 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
     return hashString;
   }
 
-  ngOnInit() {
-    this.hashtagForm = new FormGroup({
-      'hashtag': new FormControl(null, [Validators.required, this.forbiddencharacters.bind(this)])
-      });
 
-
-    this.tweetsObservableSubscription = this.hashSearch.getAllTweets()
-    .subscribe(
-      (data) => {
-        this.allTweets.push(JSON.parse(data));
-        this.totalItems = this.allTweets.length;
-       // console.log('this.allTweets.length',this.allTweets.length);
-      },
-      (error: string) => { console.log(error); },
-      () => { console.log('completed in sub this.allTweets.length',this.allTweets.length); }
-    );
-  }
 
   ngOnDestroy() {
     this.tweetsObservableSubscription.unsubscribe();

@@ -1,32 +1,23 @@
-<p>
-  Hashtag search
-</p>
-<!--(ngSubmit)="(f.valid)?onSubmit(f):errormsg='Please enter a valid hashtag'"   #f="ngForm" 
- name="hashtag" ngModel    required     #hashtag
--->
+<p>Hashtag search</p>
 <div class="form-search">
-    <form class="form-inline" [formGroup]="hashtagForm" (ngSubmit)="onSubmit()" >
-      <input class="form-control" 
-        type="text"
-        id="hashtag"
-        formControlName="hashtag"
-        placeholder="Search by Hashtag"
-        >
-      <span class="glyphicon glyphicon-search" 
-      (click)="(hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched)?onSubmit():errormsg='enter a valid hashtag'"></span>
-    </form>
+<form class="form-inline" [formGroup]="hashtagForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <input class="form-control" type="text" id="hashtag" 
+    formControlName="hashtag" 
+    placeholder="Search by Hashtag">
+    <span class="glyphicon glyphicon-search" 
+    (click)="( hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched )?onSubmit():errormsg='enter a valid hashtag'"></span>
+  </div>
+</form>
 
     <span *ngIf="!hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched"
               class="help-block">
-              <span *ngIf="hashtagForm.get('hashtag').errors['ForbiddenCharUse']">Forbidden Characters! Please avoid /\\\)\(\{\}\[\]\;\:\'\"</span>
+              <span *ngIf="hashtagForm.get('hashtag').errors['ForbiddenCharUse']">Forbidden Characters!"</span>
               <span *ngIf="hashtagForm.get('hashtag').errors['required']">This field is required!</span>
               <span *ngIf="hashtagForm.get('hashtag').errors['HashTagStarts']">Hashtag should start with # char!</span>
     </span>
 
-    <!--span class="errormsg" 
-    *ngIf="!f.valid " >{{errormsg}}</span>
-  </div-->
-<!-- class="form-inline" [formGroup]="hashtagForm" -->
+
 <span
           *ngIf="!hashtagForm.valid && hashtagForm.touched"
           class="help-block">Please enter valid data!</span>
@@ -65,4 +56,3 @@
 </div>
 
 <div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length==0 ">No Tweets Found! Try to change the hashtags.</div>
-<!-- *ngIf="totalItems>maxPage" -->
