@@ -24,7 +24,7 @@ export class UserSearchComponent implements OnInit,OnDestroy {
   maxSize = 5; // for pager
 
   maxPage = 10;
-
+  loading = false;
 
   constructor(private userSearch: TweetServiceService) { }
   
@@ -37,29 +37,36 @@ export class UserSearchComponent implements OnInit,OnDestroy {
       ])
     });
     
-    // subscribing to the twitts
-    
-  //  this.allUserTwitts =  this.hashSearch.getAllTweets(hashtagStr);
-    // .subscribe(
-    //   (data) => {
-    //     this.allUserTwitts.push(JSON.parse(data));
-    //     this.totalItems = this.allUserTwitts.length;
-    //    // console.log('this.allUserTwitts.length',this.allUserTwitts.length);
-    //   },
-    //   (error: string) => { console.log(error); },
-    //   () => { console.log('completed in sub this.allUserTwitts.length',this.allUserTwitts.length); }
-    // );
-
-   // this.twittsWithUser = [...this.allUserTwitts]; 
   }
   
   async onSubmit(){
-    this.twittsWithUser = await this.userSearch.getTweetsByUser(this.userForm.value.user);
+    this.loading=true;
+    let usersArr;
+    
+    if(this.userForm.value.user.includes(' ')){
+       usersArr = this.userForm.value.user.split(' ');
+       console.log('usersArr',usersArr);
+       this.twittsWithUser = await this.userSearch.getTweetsByUser(usersArr[0]);
+       usersArr.forEach(userName => {
+         this.twittsWithUser = this.searchByUser(userName, this.twittsWithUser)
+      });
+      this.loading=false;
+    }else{
+      this.twittsWithUser = await this.userSearch.getTweetsByUser(this.userForm.value.user);
+      this.loading=false;
+    }
+    
     this.totalItems = this.twittsWithUser.length;
     console.log('this.twittsWithUser',this.twittsWithUser);
   }
 
-
+  searchByUser =  (userName: string, userArr ) => {
+    let tweetsByUser = [];
+    tweetsByUser = [...userArr.filter( tweet => 
+      tweet.account.fullname.includes( userName)
+    )];
+    return tweetsByUser;
+}
   
   returnTwo = (myArray: string[]) => {
     let hashString ='';

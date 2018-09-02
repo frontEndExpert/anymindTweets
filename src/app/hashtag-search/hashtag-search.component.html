@@ -17,7 +17,9 @@
 
   <span *ngIf="!hashtagForm.valid && hashtagForm.touched" class="help-block">Please enter valid data!</span>
 </div>
-
+<div *ngIf="loading" style="text-align:center;">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+</div>
 <div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag;">
   <div class="container-fluid tweetsTable">
     <table class="table table-default tweets-table">

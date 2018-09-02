@@ -12,9 +12,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./hashtag-search.component.css']
 })
 export class HashtagSearchComponent implements OnInit {
- // tweetsObservableSubscription: Subscription; // subscribe to All Tweets
-  // hashtagForm: NgForm;
-  // @ViewChild('f') 
+  loading=false;
   hashtagForm: FormGroup;
   errormsg='';
   allTweets ; // all the tweet form the service. Allow-Cross-Origin did not work
@@ -43,7 +41,7 @@ export class HashtagSearchComponent implements OnInit {
   }
   
   async onSubmit(){
-    //if(this.tweetsObservableSubscription){ this.tweetsObservableSubscription.unsubscribe();}
+    this.loading=true;
     this.hashtagArr = this.hashtagForm.value.hashtag.split(',');
     console.log('hashtagArr',this.hashtagArr);
     this.hashTag4Table = this.returnTwo(this.hashtagArr);
@@ -60,7 +58,7 @@ export class HashtagSearchComponent implements OnInit {
 
     this.totalItems = this.tweetsWithHashtag.length;
     console.log('this.tweetsWithHashtag.length',this.tweetsWithHashtag.length);
-
+    this.loading=false;
     // this.hashtagForm.reset();
   }
 

@@ -18,6 +18,10 @@
 </div>
 
 <div *ngIf="userForm.valid && userForm.touched ">
+  <div *ngIf="this.loading;" style="text-align:center;">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  </div>
+  
   <div class="container-fluid twittsTable">
     <table class="table table-default twitts-table">
       <thead>
