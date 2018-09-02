@@ -11,14 +11,13 @@
   <span *ngIf="!userForm.get('user').valid && userForm.get('user').touched" class="help-block">
     <span *ngIf="userForm.get('user').errors['ForbiddenCharUse']">Forbidden Characters!"</span>
     <span *ngIf="userForm.get('user').errors['required']">This field is required!</span>
-    <span *ngIf="userForm.get('user').errors['NotStartsWithHash']">user should start with # char!</span>
   </span>
 
 
   <span *ngIf="!userForm.valid && userForm.touched" class="help-block">Please enter valid data!</span>
 </div>
 
-<div *ngIf="userForm.valid && userForm.touched && twittsWithUser.length>0;">
+<div *ngIf="userForm.valid && userForm.touched ">
   <div class="container-fluid twittsTable">
     <table class="table table-default twitts-table">
       <thead>
@@ -32,13 +31,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let twitt of twittsWithuser | paginate: { id:'userSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
+        <tr *ngFor="let twitt of twittsWithUser | paginate: { id:'userSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
           <td>
-            <div>{{twitt.text}}</div>
+                <div *ngIf="(twitt.text).length>50; else under50">
+                    {{twitt.text.substring(0,50) }}
+                    <a data-toggle="collapse"  style="height:100%;font-size: 14pt;" href="#collapse{{idn}}" style="text-align:right;">...</a> <div id="collapse{{idn}}" class="panel-collapse collapse">
+                      {{twitt.text.substring(51)}}</div>
+                </div>  
+                <ng-template #under50>{{twitt.text}}</ng-template>
           </td>
-          <td>{{twitt.likes}}</td>
-          <td>{{twitt.replies}}</td>
-          <td>{{twitt.retwitts}}</td>
+          <td>{{(twitt.likes)?twitt.likes:'-'}}</td>
+          <td>{{(twitt.replies)?twitt.replies:'-'}}</td>
+          <td>{{(twitt.retweets)?twitt.retweets:'-'}}</td>
           <td>{{this.returnTwo(twitt.hashtags)}}</td>
           <td>{{twitt.date.split(' - ')[1] | date:'MMM d, y'}}</td>
         </tr>
@@ -56,5 +60,5 @@
 
 </div>
 
-<div *ngIf="userForm.valid && userForm.touched && twittsWithUser.length==0 ">No Twitts Found! Try to change
+<div *ngIf="userForm.valid && userForm.touched && twittsWithUser===null ">No Twitts Found! Try to change
   the users.</div>

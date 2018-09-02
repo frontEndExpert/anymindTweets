@@ -43,9 +43,9 @@
               
               
           </td>
-          <td>{{tweet.likes}}</td>
-          <td>{{tweet.replies}}</td>
-          <td>{{tweet.retweets}}</td>
+          <td>{{(tweet.likes)?tweet.likes:'-'}}</td>
+          <td>{{(tweet.replies)?tweet.replies:'-'}}</td>
+          <td>{{(tweet.retweets)?tweet.retweets:'-'}}</td>
           <td>{{hashTag4Table}}</td>
           <td>{{tweet.date.split(' - ')[1] | date:'MMM d, y'}}</td>
         </tr>
