@@ -1,3 +1,60 @@
-<p>
-  user-search works!
-</p>
+<p>User search</p>
+<div class="form-search">
+  <form class="form-inline" [formGroup]="userForm" (ngSubmit)="( userForm.get('user').valid && userForm.get('user').touched )?onSubmit():null">
+    <div class="form-group">
+      <input class="form-control" type="text" id="user" formControlName="user" placeholder="Search by user">
+      <span class="glyphicon glyphicon-search" 
+      (click)="( userForm.get('user').valid && userForm.get('user').touched )?onSubmit():errormsg='enter a valid user'"></span>
+    </div>
+  </form>
+
+  <span *ngIf="!userForm.get('user').valid && userForm.get('user').touched" class="help-block">
+    <span *ngIf="userForm.get('user').errors['ForbiddenCharUse']">Forbidden Characters!"</span>
+    <span *ngIf="userForm.get('user').errors['required']">This field is required!</span>
+    <span *ngIf="userForm.get('user').errors['NotStartsWithHash']">user should start with # char!</span>
+  </span>
+
+
+  <span *ngIf="!userForm.valid && userForm.touched" class="help-block">Please enter valid data!</span>
+</div>
+
+<div *ngIf="userForm.valid && userForm.touched && twittsWithUser.length>0;">
+  <div class="container-fluid twittsTable">
+    <table class="table table-default twitts-table">
+      <thead>
+        <tr>
+          <th width="40%">Twitt</th>
+          <th width="7%">Likes</th>
+          <th width="7%">Replies</th>
+          <th width="6%">Retwitts</th>
+          <th width="20%">users</th>
+          <th width="20%">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let twitt of twittsWithuser | paginate: { id:'userSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
+          <td>
+            <div>{{twitt.text}}</div>
+          </td>
+          <td>{{twitt.likes}}</td>
+          <td>{{twitt.replies}}</td>
+          <td>{{twitt.retwitts}}</td>
+          <td>{{this.returnTwo(twitt.hashtags)}}</td>
+          <td>{{twitt.date.split(' - ')[1] | date:'MMM d, y'}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div id="pagination" class="col-xs-12 col-12 text-center">
+      <pagination-controls id="userSearch" (pageChange)="currentPage = $event" [maxSize]="5" directionLinks="true"
+        autoHide="true" [previousLabel]="'<'" [nextLabel]="'>'" screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="userForm.valid && userForm.touched && twittsWithUser.length==0 ">No Twitts Found! Try to change
+  the users.</div>

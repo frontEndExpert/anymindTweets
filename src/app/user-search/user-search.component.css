@@ -1,0 +1,69 @@
+.form-control{
+    width: 200px!important;
+}
+
+.form-search {
+    vertical-align: middle;
+    padding-top: 0px;
+    padding-left: 0px;
+    white-space: nowrap;
+    font-size: 18px;
+}
+form input.form-control {
+      background-color: white;
+      width: 300px!important;
+      height: 50px;
+      justify-content: flex-start;
+      border-width: 1px  !important;
+      border-color: gray!important;
+      padding: 0px 0px 0px 22px !important;
+      margin: 0px 15px 15px 25px !important;
+      flex-basis: content;
+      align-self: left;
+    }
+
+form span.glyphicon-search {
+    font-size: 19px!important;
+    height: 20px !important;
+    text-align: right!important;
+    right: 50px!important;
+    top: 4px !important;
+    color: #cccccc!important;
+    cursor: pointer;
+  }
+
+  form span.glyphicon-search.ng-invalid{
+      cursor: help;
+      color: #eeeeee!important;
+  }
+
+  .tweets-table, th,td{
+      background-color: white;
+      color: grey!important;
+      font-size: 12px;
+  }
+
+  .tweets-table{
+      width: 100%!important;
+      table-layout: fixed!important;
+}
+
+.tweets-table > th:nth-child(1){
+    width: 40%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 7%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 7%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 6%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 20%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 20%;
+}
+

@@ -1,58 +1,60 @@
 <p>Hashtag search</p>
 <div class="form-search">
-<form class="form-inline" [formGroup]="hashtagForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <input class="form-control" type="text" id="hashtag" 
-    formControlName="hashtag" 
-    placeholder="Search by Hashtag">
-    <span class="glyphicon glyphicon-search" 
-    (click)="( hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched )?onSubmit():errormsg='enter a valid hashtag'"></span>
-  </div>
-</form>
-
-    <span *ngIf="!hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched"
-              class="help-block">
-              <span *ngIf="hashtagForm.get('hashtag').errors['ForbiddenCharUse']">Forbidden Characters!"</span>
-              <span *ngIf="hashtagForm.get('hashtag').errors['required']">This field is required!</span>
-              <span *ngIf="hashtagForm.get('hashtag').errors['HashTagStarts']">Hashtag should start with # char!</span>
-    </span>
-
-
-<span
-          *ngIf="!hashtagForm.valid && hashtagForm.touched"
-          class="help-block">Please enter valid data!</span>
-<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length>0;" class="tweetsTable">
-<table class="table table-default tweets-table">
-    <thead>
-        <tr>
-            <th width="40%" >Tweet</th>
-            <th width="7%">Likes</th>
-            <th width="7%">Replies</th>
-            <th width="6%">Retweets</th>
-            <th width="20%" >Hashtags</th>
-            <th width="20%">Date</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let tweet of tweetsWithHashtag | paginate: { id:'hashtagSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
-        <td >{{tweet.text}}</td>
-        <td >{{tweet.likes}}</td>
-        <td >{{tweet.replies}}</td>
-        <td >{{tweet.retweets}}</td>
-        <td >{{hashTag4Table}}</td>
-        <td >{{tweet.date.split(' - ')[1] | date:'MMM d, y'}}</td>
-      </tr>
-
-    </tbody>
-</table>
-
-    <div id="pagination" class="col-xs-12 col-12 text-center" >
-      <pagination-controls id="hashtagSearch" (pageChange)="currentPage = $event" [maxSize]="5" directionLinks="true" autoHide="true"
-            [previousLabel]="'<'" [nextLabel]="'>'" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
-        </pagination-controls>
+  <form class="form-inline" [formGroup]="hashtagForm" (ngSubmit)="( hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched )?onSubmit():null">
+    <div class="form-group">
+      <input class="form-control" type="text" id="hashtag" formControlName="hashtag" placeholder="Search by Hashtag">
+      <span class="glyphicon glyphicon-search" 
+      (click)="( hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched )?onSubmit():errormsg='enter a valid hashtag'"></span>
     </div>
- 
+  </form>
+
+  <span *ngIf="!hashtagForm.get('hashtag').valid && hashtagForm.get('hashtag').touched" class="help-block">
+    <span *ngIf="hashtagForm.get('hashtag').errors['ForbiddenCharUse']">Forbidden Characters!"</span>
+    <span *ngIf="hashtagForm.get('hashtag').errors['required']">This field is required!</span>
+    <span *ngIf="hashtagForm.get('hashtag').errors['NotStartsWithHash']">Hashtag should start with # char!</span>
+  </span>
+
+
+  <span *ngIf="!hashtagForm.valid && hashtagForm.touched" class="help-block">Please enter valid data!</span>
+</div>
+
+<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length>0;">
+  <div class="container-fluid tweetsTable">
+    <table class="table table-default tweets-table">
+      <thead>
+        <tr>
+          <th width="40%">Tweet</th>
+          <th width="7%">Likes</th>
+          <th width="7%">Replies</th>
+          <th width="6%">Retweets</th>
+          <th width="20%">Hashtags</th>
+          <th width="20%">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tweet of tweetsWithHashtag | paginate: { id:'hashtagSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
+          <td>
+            <div>{{tweet.text}}</div>
+          </td>
+          <td>{{tweet.likes}}</td>
+          <td>{{tweet.replies}}</td>
+          <td>{{tweet.retweets}}</td>
+          <td>{{hashTag4Table}}</td>
+          <td>{{tweet.date.split(' - ')[1] | date:'MMM d, y'}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div id="pagination" class="col-xs-12 col-12 text-center">
+      <pagination-controls id="hashtagSearch" (pageChange)="currentPage = $event" [maxSize]="5" directionLinks="true"
+        autoHide="true" [previousLabel]="'<'" [nextLabel]="'>'" screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </div>
 
 </div>
 
-<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length==0 ">No Tweets Found! Try to change the hashtags.</div>
+<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length==0 ">No Tweets Found! Try to change
+  the hashtags.</div>

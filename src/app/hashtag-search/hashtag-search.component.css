@@ -28,8 +28,13 @@ form span.glyphicon-search {
     text-align: right!important;
     right: 50px!important;
     top: 4px !important;
-    color: #dddddd!important;
+    color: #cccccc!important;
     cursor: pointer;
+  }
+
+  form span.glyphicon-search.ng-invalid{
+      cursor: help;
+      color: #eeeeee!important;
   }
 
   .tweets-table, th,td{
@@ -39,5 +44,29 @@ form span.glyphicon-search {
   }
 
   .tweets-table{
-      width: 100%;
+      width: 100%!important;
+      table-layout: fixed!important;
+}
+
+.tweets-table > th:nth-child(1){
+    width: 40%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 7%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 7%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 6%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 20%!important;
+}
+.tweets-table > th:nth-child(1){
+    width: 20%;
+}
+
+.tweetsTable{
+
 }
