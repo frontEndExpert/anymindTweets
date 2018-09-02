@@ -11,14 +11,14 @@ import { map } from 'rxjs/operators';
   templateUrl: './hashtag-search.component.html',
   styleUrls: ['./hashtag-search.component.css']
 })
-export class HashtagSearchComponent implements OnInit, OnDestroy {
-  tweetsObservableSubscription: Subscription; // subscribe to All Tweets
+export class HashtagSearchComponent implements OnInit {
+ // tweetsObservableSubscription: Subscription; // subscribe to All Tweets
   // hashtagForm: NgForm;
   // @ViewChild('f') 
   hashtagForm: FormGroup;
   errormsg='';
   allTweets ; // all the tweet form the service. Allow-Cross-Origin did not work
-  tweetsWithHashtag = []; // the filtered Tweets by hashtags
+  tweetsWithHashtag; // the filtered Tweets by hashtags
   hashtagArr=['']; // the input hashtag to search
   hashTag4Table=''; // the hashtag to display in the table
   currentPage = 1; // for pager and pagination
@@ -42,31 +42,18 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
     
   }
   
-  onSubmit(){
-    if(this.tweetsObservableSubscription){ this.tweetsObservableSubscription.unsubscribe();}
-    this.allTweets = null;
-
+  async onSubmit(){
+    //if(this.tweetsObservableSubscription){ this.tweetsObservableSubscription.unsubscribe();}
     this.hashtagArr = this.hashtagForm.value.hashtag.split(',');
     console.log('hashtagArr',this.hashtagArr);
     this.hashTag4Table = this.returnTwo(this.hashtagArr);
     let hashtagStr = this.hashtagArr[0].substring(1);
     console.log('hashtagStr',hashtagStr);
- // subscribing to the tweets
-  this.tweetsObservableSubscription = this.hashSearch.getAllTweets(hashtagStr)
- .subscribe(
-   (data) => {
-     this.allTweets = data;
-     this.totalItems = this.allTweets.length;
-     
-   },
-   (error: string) => { console.log(error); },
-   () => { console.log('completed in sub this.allTweets.length',this.allTweets.length); }
- );
-
-    waitsFor
-    this.tweetsWithHashtag = this.allTweets; // starting with all tweets
-    // filtering the tweets array by hashtags recursivly
-    console.log('this.allTweets',this.allTweets);
+    // getting the twitts to the first hashtag term
+    this.tweetsWithHashtag = await this.hashSearch.getAllTweets(hashtagStr);
+    
+    console.log('onSubmit ',this.tweetsWithHashtag);
+    // filtering the tweets array by ALL the hashtags serch terms
     this.hashtagArr.forEach(hashtag => {
       this.tweetsWithHashtag = this.searchByHashtag(hashtag, this.tweetsWithHashtag)
     });
@@ -88,6 +75,13 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
         return tweetsByHashtag;
     }
   
+
+    bigger50 = (tweet: string) => {
+      if(tweet.length > 50){
+        return true;
+      }
+    }
+
   returnTwo = (myArray: string[]) => {
     let hashString ='';
     if(myArray.length>=2){
@@ -97,12 +91,6 @@ export class HashtagSearchComponent implements OnInit, OnDestroy {
     }
 
     return hashString;
-  }
-
-
-
-  ngOnDestroy() {
-    this.tweetsObservableSubscription.unsubscribe();
   }
 
 }

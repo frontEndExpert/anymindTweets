@@ -18,7 +18,7 @@
   <span *ngIf="!hashtagForm.valid && hashtagForm.touched" class="help-block">Please enter valid data!</span>
 </div>
 
-<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length>0;">
+<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag;">
   <div class="container-fluid tweetsTable">
     <table class="table table-default tweets-table">
       <thead>
@@ -34,7 +34,14 @@
       <tbody>
         <tr *ngFor="let tweet of tweetsWithHashtag | paginate: { id:'hashtagSearch', itemsPerPage: maxPage, currentPage: currentPage }; let idn = index">
           <td>
-            <div>{{tweet.text}}</div>
+            <div *ngIf="this.bigger50(tweet.text); else under50">
+                {{tweet.text.substring(0,50) }}
+                <a data-toggle="collapse"  style="height:100%;font-size: 14pt;" href="#collapse{{idn}}" style="text-align:right;">...</a> <div id="collapse{{idn}}" class="panel-collapse collapse">
+                  {{tweet.text.substring(51)}}</div>
+            </div>  
+            <ng-template #under50>{{tweet.text}}</ng-template>
+              
+              
           </td>
           <td>{{tweet.likes}}</td>
           <td>{{tweet.replies}}</td>
@@ -56,5 +63,5 @@
 
 </div>
 
-<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag.length==0 ">No Tweets Found! Try to change
+<div *ngIf="hashtagForm.valid && hashtagForm.touched && tweetsWithHashtag===null ">No Tweets Found! Try to change
   the hashtags.</div>

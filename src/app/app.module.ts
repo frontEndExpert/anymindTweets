@@ -7,6 +7,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule, Response, Http  } from '@angular/http';
 
 import { NgxPaginationModule, } from 'ngx-pagination';
 import { TabsModule ,PaginationModule} from 'ngx-bootstrap';
@@ -23,7 +24,8 @@ import { TabsModule ,PaginationModule} from 'ngx-bootstrap';
     TabsModule.forRoot(),
     PaginationModule.forRoot(),
     NgxPaginationModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpModule
     
   ],
   providers: [],
