@@ -1,8 +1,8 @@
 import { async } from '@angular/core/testing';
 import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import {TweetObj,TweetServiceService} from '../tweet-service.service';
-import {MyValidators} from '../shared/myValidators';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {TweetObj, TweetServiceService} from '../tweet-service.service';
+import { MyValidators } from '../shared/myValidators';
 import { Observable, Observer, Subscription, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 
