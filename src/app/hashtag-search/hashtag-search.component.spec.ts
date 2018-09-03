@@ -44,4 +44,24 @@ describe('HashtagSearchComponent', () => {
     expect(comp.returnTwo(['A','B','C'])).toBe("A, B");
   }));
 
+  it('#Pascal should be a valid #hashtag input', async(() => {
+    let hashtag = component.hashtagForm.controls['hashtag']; 
+    hashtag.setValue("#Pascal");
+    expect(hashtag.valid).toBeTruthy(); 
+  }));
+  it('Pascal should be invalid input', async(() => {
+    let hashtag = component.hashtagForm.controls['hashtag']; 
+    hashtag.setValue("Pascal");
+    expect(hashtag.valid).toBeFalsy(); 
+  }));
+  it('Pascal should error with NotStartsWithHash', async(() => {
+    let hashtag = component.hashtagForm.controls['hashtag']; 
+    hashtag.setValue("Pascal");
+    let errors = hashtag.errors || {}
+    expect(errors['NotStartsWithHash']).toBeTruthy(); 
+  }));
+  it('hashtag field is invalid first', () => {
+    let hashtag = component.hashtagForm.controls['hashtag']; 
+    expect(hashtag.valid).toBeFalsy(); 
+  });
 });
